@@ -1,12 +1,3 @@
-// import { Injectable } from '@nestjs/common';
-
-// @Injectable()
-// export class AppService {
-//   getHello(): string {
-//     return 'Hello World!';
-//   }
-// }
-
 import { Injectable } from '@nestjs/common';
 import {
   CircleDeveloperControlledWalletsClient,
@@ -18,7 +9,7 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 
 @Injectable()
-export class AppService {
+export class WalletService {
   private client: CircleDeveloperControlledWalletsClient;
 
   constructor() {
@@ -28,7 +19,7 @@ export class AppService {
     });
   }
 
-  async getHello(): Promise<any> {
+  async createWallet(): Promise<string> {
     const walletSetResponse = await this.client.createWalletSet({
       name: 'arcOrbit wallet Set',
     });
@@ -40,17 +31,14 @@ export class AppService {
 
     const walletResponse = await this.client.createWallets({
       walletSetId: walletSet.id,
-      blockchains: ['ARC-TESTNET', 'SOL-DEVNET'], // Can be any supported blockchain
+      blockchains: ['SOL-DEVNET'], // Can be any supported blockchain
       count: 1,
       accountType: 'EOA', // Can be EOA or SCA
     });
-
-    console.log('Wallet set response:', walletSetResponse.data);
-    console.log('Wallet response:', walletResponse.data);
-    const wallet = walletResponse.data?.wallets;
-    if (!wallet || wallet.length === 0) {
+    const wallet = walletResponse.data?.wallets[0];
+    if (!wallet?.id) {
       throw new Error('Wallet creation failed: no ID returned');
     }
-    return wallet;
+    return wallet.id;
   }
 }
