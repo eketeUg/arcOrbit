@@ -23,8 +23,12 @@
     "@circle-fin/developer-controlled-wallets": "^10.3.1",
     "@nestjs/common": "^10.0.0",
     "@nestjs/core": "^10.0.0",
+    "@nestjs/mongoose": "^11.0.4",
     "@nestjs/platform-express": "^10.0.0",
+    "@types/node-telegram-bot-api": "^0.64.14",
     "dotenv": "^17.4.2",
+    "mongoose": "^9.6.2",
+    "node-telegram-bot-api": "^0.67.0",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1"
   },

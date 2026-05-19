@@ -28,7 +28,7 @@ export class AppService {
     });
   }
 
-  async getHello(): Promise<any> {
+  async getHello(): Promise<object> {
     const walletSetResponse = await this.client.createWalletSet({
       name: 'arcOrbit wallet Set',
     });
