@@ -130,7 +130,13 @@ export class BotService {
       let session: SessionDocument;
       switch (command) {
         case '/menu':
-          await this.sendAllFeature(user);
+          await this.walletService.getUnifiedBalance(user.evmWallet.address);
+          //   await this.walletService.depositToUnifiedWallet(
+          //     '1',
+          //     'arc',
+          //     user.evmWallet.address,
+          //   );
+          //   await this.sendAllFeature(user);
           return;
 
         //   close opened markup and delete session
