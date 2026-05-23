@@ -1,19 +1,17 @@
 import { Module } from '@nestjs/common';
-import { AgentService } from './agent.service';
 import { MongooseModule } from '@nestjs/mongoose';
-import { User, UserSchema } from '../database/schemas/user.schema';
-import { WalletModule } from '../wallet/wallet.module';
+import { SwapService } from './swap.service';
 import { RelayModule } from '../relay/relay.module';
 import { VaultModule } from '../vault/vault.module';
+import { User, UserSchema } from '../database/schemas/user.schema';
 
 @Module({
   imports: [
-    WalletModule,
     RelayModule,
     VaultModule,
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
   ],
-  providers: [AgentService],
-  exports: [AgentService],
+  providers: [SwapService],
+  exports: [SwapService],
 })
-export class AgentModule {}
+export class SwapModule {}

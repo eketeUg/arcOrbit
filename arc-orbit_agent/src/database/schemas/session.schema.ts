@@ -28,6 +28,12 @@ export class Session {
 
   @Prop({ default: false })
   thresholdSetting: boolean;
+
+  @Prop({ default: false })
+  crossChainAllocationSetting: boolean;
+
+  @Prop({ default: false })
+  crossChainThresholdSetting: boolean;
 }
 
 export const SessionSchema = SchemaFactory.createForClass(Session);

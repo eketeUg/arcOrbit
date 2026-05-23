@@ -6,10 +6,11 @@ import { DatabaseModule } from './database/database.module';
 import { BotModule } from './bot/bot.module';
 import { UserModule } from './user/user.module';
 import { AgentModule } from './agent/agent.module';
-import { ChainsModule } from './chains/chains.module';
-import { CctpModule } from './cctp/cctp.module';
-import { PortfolioModule } from './portfolio/portfolio.module';
-import { ArbitrageModule } from './arbitrage/arbitrage.module';
+import { RelayModule } from './relay/relay.module';
+import { PriceModule } from './price/price.module';
+import { VaultModule } from './vault/vault.module';
+import { SwapModule } from './swap/swap.module';
+import { RebalanceModule } from './rebalance/rebalance.module';
 
 @Module({
   imports: [
@@ -18,10 +19,11 @@ import { ArbitrageModule } from './arbitrage/arbitrage.module';
     BotModule,
     UserModule,
     AgentModule,
-    ChainsModule,
-    CctpModule,
-    PortfolioModule,
-    ArbitrageModule,
+    RelayModule,
+    PriceModule,
+    VaultModule,
+    SwapModule,
+    RebalanceModule,
   ],
   controllers: [AppController],
   providers: [AppService],

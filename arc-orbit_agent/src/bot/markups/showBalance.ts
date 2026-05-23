@@ -1,16 +1,18 @@
-export const showBalanceMarkup = async (
-  mntBalance: number,
-  usdcBalance: number,
-  usdtBalance: number,
-  wmntBalance: number,
-  moeBalance: number,
-) => {
+export const showBalanceMarkup = async (balances: {
+  USDC: string;
+  EURC: string;
+  cirBTC: string;
+}) => {
   return {
-    message: `<b>Wallet Balance:</b>:\n\n➤ ${mntBalance} <b>MNT</b>\n➤ ${usdcBalance} <b>USDC</b>\n➤ ${usdtBalance} <b>USDT</b>\n➤ ${wmntBalance} <b>WMNT</b>\n➤ ${moeBalance} <b>MOE</b>`,
+    message:
+      `<b>💳 ARC Treasury Wallet Balances:</b>\n\n` +
+      `➤ <b>USDC</b>: <code>${parseFloat(balances.USDC).toFixed(6).replace(/\.?0+$/, '')}</code>\n` +
+      `➤ <b>EURC</b>: <code>${parseFloat(balances.EURC).toFixed(6).replace(/\.?0+$/, '')}</code>\n` +
+      `➤ <b>cirBTC</b>: <code>${parseFloat(balances.cirBTC).toFixed(8).replace(/\.?0+$/, '')}</code>`,
     keyboard: [
       [
         {
-          text: 'Fund wallet 💵',
+          text: 'Fund Wallet 💵',
           callback_data: JSON.stringify({
             command: '/fundWallet',
             language: 'english',

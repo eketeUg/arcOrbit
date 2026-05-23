@@ -2,36 +2,20 @@ import { UserDocument } from 'src/database/schemas/user.schema';
 
 export const allFeaturesMarkup = async (
   user: UserDocument,
-  balance: string,
+  totalValuationUSD: string,
 ) => {
   return {
-    message: `<b> Wallets:</b> \n <code>${user.evmWallet.address}</code> (bASE)\n <code>${user.svmWallet.address}</code> (solana) \n\n Unified Balance: ${balance}`,
+    message:
+      `🪐 <b>arcOrbit Central Hub</b>\n\n` +
+      `<b>💳 Addresses:</b>\n` +
+      ` • EVM (ARC/Base): <code>${user.evmWallet.address}</code>\n` +
+      ` • SVM (Solana): <code>${user.svmWallet.address}</code>\n\n` +
+      `💰 <b>ARC Vault Valuation:</b> $${parseFloat(totalValuationUSD).toLocaleString()}\n` +
+      `🎯 <b>Target Allocation:</b> USDC ${user.allocationUsdc}% | EURC ${user.allocationEurc}% | cirBTC ${user.allocationCirbtc}%\n` +
+      `🔼 <b>Drift Threshold:</b> ${user.rebalanceThreshold}%\n` +
+      `🤖 <b>Auto-Rebalancing:</b> ${user.rebalanceEnabled ? '✅ Enabled' : '❌ Disabled'}`,
     keyboard: [
-      [{ text: '🤖 Mode' }],
       [
-        {
-          text: '🔃 Rebalancer',
-          callback_data: JSON.stringify({
-            command: '/rebalanceMode',
-            language: 'english',
-          }),
-        },
-        {
-          text: 'Arbitrage ',
-          callback_data: JSON.stringify({
-            command: '/portfolioOverview',
-            language: 'english',
-          }),
-        },
-      ],
-      [
-        {
-          text: '💳 Wallet',
-          callback_data: JSON.stringify({
-            command: '/walletFeatures',
-            language: 'english',
-          }),
-        },
         {
           text: '📊 Portfolio Overview',
           callback_data: JSON.stringify({
@@ -39,16 +23,24 @@ export const allFeaturesMarkup = async (
             language: 'english',
           }),
         },
-      ],
-      [
         {
-          text: `${user.rebalanceEnabled ? `✅ Auto Rebalancing mode Enabled` : '🔄 Enable Auto Rebalancing agent mode'}`,
+          text: '🌉 Cross-Chain Hub',
           callback_data: JSON.stringify({
-            command: '/enableRebalance',
+            command: '/crossChainOverview',
             language: 'english',
           }),
         },
       ],
+      [
+        {
+          text: '💳 Balance details',
+          callback_data: JSON.stringify({
+            command: '/walletFeatures',
+            language: 'english',
+          }),
+        },
+      ],
+
       [
         {
           text: '🎯 Set Target Allocation',
@@ -58,9 +50,20 @@ export const allFeaturesMarkup = async (
           }),
         },
         {
-          text: '	🔼 Set Threshold',
+          text: '🔼 Set Drift Threshold',
           callback_data: JSON.stringify({
             command: '/setThreshold',
+            language: 'english',
+          }),
+        },
+      ],
+      [
+        {
+          text: user.rebalanceEnabled
+            ? '🔄 Disable Auto-Rebalancing'
+            : '🔄 Enable Auto-Rebalancing',
+          callback_data: JSON.stringify({
+            command: '/enableRebalance',
             language: 'english',
           }),
         },

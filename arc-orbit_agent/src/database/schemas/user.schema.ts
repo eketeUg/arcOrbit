@@ -27,20 +27,37 @@ export class User {
   @Prop({ type: Object })
   svmWallet: Wallet;
 
-  @Prop({ default: 0 })
-  upperThreshold: string;
+  @Prop({ default: 50 })
+  allocationUsdc: number;
 
-  @Prop({ default: 0 })
-  lowerThreshold: string;
+  @Prop({ default: 30 })
+  allocationEurc: number;
 
-  @Prop({ default: 0 })
-  usdcAllocation: string;
+  @Prop({ default: 20 })
+  allocationCirbtc: number;
 
-  @Prop({ default: 0 })
-  tokenAllocation: string;
+  @Prop({ default: 5 })
+  rebalanceThreshold: number;
 
   @Prop({ default: false })
   rebalanceEnabled: boolean;
+
+  @Prop({ default: 33 })
+  allocationBase: number;
+
+  @Prop({ default: 33 })
+  allocationSolana: number;
+
+  @Prop({ default: 34 })
+  allocationArc: number;
+
+  @Prop({ default: 5 })
+  crossChainThreshold: number;
+
+  @Prop({ default: false })
+  crossChainRebalanceEnabled: boolean;
+
+
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

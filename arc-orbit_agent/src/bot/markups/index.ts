@@ -5,6 +5,9 @@ import { showBalanceMarkup } from './showBalance';
 import { resetWalletWarningMarkup } from './resetWalletWarning';
 import { walletFeaturesMarkup } from './walletFeatures';
 import { showPortfolioMarkup } from './showPortfolio';
+import { bridgeResultMarkup } from './bridgeResult';
+import { swapResultMarkup } from './swapResult';
+import { crossChainMarkup } from './crossChain';
 
 export {
   welcomeMessageMarkup,
@@ -14,4 +17,8 @@ export {
   resetWalletWarningMarkup,
   walletFeaturesMarkup,
   showPortfolioMarkup,
+  bridgeResultMarkup,
+  swapResultMarkup,
+  crossChainMarkup,
 };
+
