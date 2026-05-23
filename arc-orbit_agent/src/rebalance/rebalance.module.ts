@@ -5,7 +5,10 @@ import { VaultModule } from '../vault/vault.module';
 import { SwapModule } from '../swap/swap.module';
 import { PriceModule } from '../price/price.module';
 import { User, UserSchema } from '../database/schemas/user.schema';
-import { RebalanceJob, RebalanceJobSchema } from '../database/schemas/rebalance-job.schema';
+import {
+  RebalanceJob,
+  RebalanceJobSchema,
+} from '../database/schemas/rebalance-job.schema';
 
 @Module({
   imports: [

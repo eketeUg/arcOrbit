@@ -18,7 +18,9 @@ export const showPortfolioMarkup = async (data: {
     const diffSign = diff >= 0 ? `+${diff.toFixed(1)}%` : `${diff.toFixed(1)}%`;
     assetLines +=
       `<b>➤ ${asset.token}</b>\n` +
-      ` • Balance: <code>${parseFloat(asset.balance).toFixed(6).replace(/\.?0+$/, '')}</code>\n` +
+      ` • Balance: <code>${parseFloat(asset.balance)
+        .toFixed(6)
+        .replace(/\.?0+$/, '')}</code>\n` +
       ` • Price: <code>$${asset.priceUSD.toLocaleString()}</code>\n` +
       ` • Value: <code>$${parseFloat(asset.valueUSD).toLocaleString()}</code>\n` +
       ` • Allocation: <code>${asset.actualPct.toFixed(1)}%</code> (Target: <code>${asset.targetPct}%</code>, Drift: <code>${diffSign}</code>)\n\n`;

@@ -35,7 +35,7 @@ export class PriceService {
         address,
         symbol, // tokenIn (EURC / cirBTC)
         'USDC', // tokenOut (USDC)
-        '1.0',  // amountIn
+        '1.0', // amountIn
       );
 
       const price = parseFloat(estimate.estimatedOutput.amount);
@@ -45,7 +45,7 @@ export class PriceService {
       }
     } catch (error) {
       this.logger.warn(
-        `Failed to fetch on-chain price for ${symbol}. Using fallback: ${this.fallbackPrices[symbol]}`,
+        `Failed to fetch on-chain price for ${symbol}. Using fallback: ${this.fallbackPrices[symbol]}. Error: ${error.message || error}`,
       );
     }
 

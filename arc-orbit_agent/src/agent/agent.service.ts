@@ -1,7 +1,7 @@
 import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { User, UserDocument } from '../database/schemas/user.schema';
+import { User } from '../database/schemas/user.schema';
 import { WalletService } from '../wallet/wallet.service';
 import { RelayService } from '../relay/relay.service';
 import { VaultService } from '../vault/vault.service';
@@ -32,16 +32,30 @@ export class AgentService implements OnModuleInit {
     totalUSDC: string;
     balances: { Base: string; Solana: string; ARC: string };
     allocations: { Base: number; Solana: number; ARC: number };
-    driftDetails: Array<{ chain: string; target: number; actual: number; drift: number }>;
+    driftDetails: Array<{
+      chain: string;
+      target: number;
+      actual: number;
+      drift: number;
+    }>;
   }> {
     const user = await this.userModel.findOne({ chatId });
     if (!user) throw new Error(`User not found: ${chatId}`);
 
     // Fetch USDC balances on all 3 chains
     const [balanceBase, balanceSolana, balanceArc] = await Promise.all([
-      this.walletService.getUSDCBalanceOnChain(user.evmWallet.address, 'BASE-SEPOLIA'),
-      this.walletService.getUSDCBalanceOnChain(user.svmWallet.address, 'SOL-DEVNET'),
-      this.walletService.getUSDCBalanceOnChain(user.evmWallet.address, 'ARC-TESTNET'),
+      this.walletService.getUSDCBalanceOnChain(
+        user.evmWallet.address,
+        'BASE-SEPOLIA',
+      ),
+      this.walletService.getUSDCBalanceOnChain(
+        user.svmWallet.address,
+        'SOL-DEVNET',
+      ),
+      this.walletService.getUSDCBalanceOnChain(
+        user.evmWallet.address,
+        'ARC-TESTNET',
+      ),
     ]);
 
     const valBase = parseFloat(balanceBase);
@@ -130,7 +144,11 @@ export class AgentService implements OnModuleInit {
     const executedBridges: any[] = [];
 
     if (totalUSDC <= 0) {
-      return { success: true, executedBridges, error: 'Total USDC balance is zero.' };
+      return {
+        success: true,
+        executedBridges,
+        error: 'Total USDC balance is zero.',
+      };
     }
 
     // Target balance in USDC for each chain
@@ -162,7 +180,9 @@ export class AgentService implements OnModuleInit {
             status: 'PLANNED',
           });
         } else {
-          this.logger.log(`Ingressing ${bridgeAmount} USDC from Base to ARC...`);
+          this.logger.log(
+            `Ingressing ${bridgeAmount} USDC from Base to ARC...`,
+          );
           const result = await this.relayService.bridgeUSDC(
             BridgeChain.Base_Sepolia,
             BridgeChain.Arc_Testnet,
@@ -206,7 +226,9 @@ export class AgentService implements OnModuleInit {
             status: 'PLANNED',
           });
         } else {
-          this.logger.log(`Ingressing ${bridgeAmount} USDC from Solana to ARC...`);
+          this.logger.log(
+            `Ingressing ${bridgeAmount} USDC from Solana to ARC...`,
+          );
           const result = await this.relayService.bridgeUSDC(
             BridgeChain.Solana_Devnet,
             BridgeChain.Arc_Testnet,
@@ -295,7 +317,9 @@ export class AgentService implements OnModuleInit {
             status: 'PLANNED',
           });
         } else {
-          this.logger.log(`Egressing ${bridgeAmount} USDC from ARC to Solana...`);
+          this.logger.log(
+            `Egressing ${bridgeAmount} USDC from ARC to Solana...`,
+          );
           const result = await this.relayService.bridgeUSDC(
             BridgeChain.Arc_Testnet,
             BridgeChain.Solana_Devnet,
@@ -329,7 +353,9 @@ export class AgentService implements OnModuleInit {
 
       return { success: true, executedBridges };
     } catch (err) {
-      this.logger.error(`Error executing cross chain rebalancing: ${err.message}`);
+      this.logger.error(
+        `Error executing cross chain rebalancing: ${err.message}`,
+      );
       return { success: false, executedBridges, error: err.message };
     }
   }
@@ -342,16 +368,22 @@ export class AgentService implements OnModuleInit {
     this.isBridging = true;
 
     try {
-      const activeUsers = await this.userModel.find({ crossChainRebalanceEnabled: true });
+      const activeUsers = await this.userModel.find({
+        crossChainRebalanceEnabled: true,
+      });
       for (const user of activeUsers) {
         const drift = await this.calculateCrossChainDrift(user.chatId);
         if (drift.hasDrift) {
-          this.logger.log(`Cross-chain drift detected for user ${user.chatId}. Triggering bridges...`);
+          this.logger.log(
+            `Cross-chain drift detected for user ${user.chatId}. Triggering bridges...`,
+          );
           await this.rebalanceCrossChain(user.chatId, false);
         }
       }
     } catch (error) {
-      this.logger.error(`Scheduled cross-chain rebalancing failed: ${error.message}`);
+      this.logger.error(
+        `Scheduled cross-chain rebalancing failed: ${error.message}`,
+      );
     } finally {
       this.isBridging = false;
     }

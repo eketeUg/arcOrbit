@@ -1,9 +1,15 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { User, UserDocument } from '../database/schemas/user.schema';
-import { VaultSnapshot, VaultSnapshotDocument } from '../database/schemas/vault-snapshot.schema';
-import { VaultTransaction, VaultTransactionDocument } from '../database/schemas/vault-transaction.schema';
+import { User } from '../database/schemas/user.schema';
+import {
+  VaultSnapshot,
+  VaultSnapshotDocument,
+} from '../database/schemas/vault-snapshot.schema';
+import {
+  VaultTransaction,
+  VaultTransactionDocument,
+} from '../database/schemas/vault-transaction.schema';
 import { WalletService } from '../wallet/wallet.service';
 import { PriceService } from '../price/price.service';
 
@@ -15,8 +21,10 @@ export class VaultService {
     private readonly walletService: WalletService,
     private readonly priceService: PriceService,
     @InjectModel(User.name) private readonly userModel: Model<User>,
-    @InjectModel(VaultSnapshot.name) private readonly snapshotModel: Model<VaultSnapshot>,
-    @InjectModel(VaultTransaction.name) private readonly transactionModel: Model<VaultTransaction>,
+    @InjectModel(VaultSnapshot.name)
+    private readonly snapshotModel: Model<VaultSnapshot>,
+    @InjectModel(VaultTransaction.name)
+    private readonly transactionModel: Model<VaultTransaction>,
   ) {}
 
   /**
@@ -39,7 +47,9 @@ export class VaultService {
     }
 
     this.logger.log(`Syncing balances for user ${chatId}...`);
-    const tokenBalances = await this.walletService.getWalletBalances(user.evmWallet.id);
+    const tokenBalances = await this.walletService.getWalletBalances(
+      user.evmWallet.id,
+    );
 
     const balances: Record<string, string> = {
       USDC: '0',
@@ -97,7 +107,8 @@ export class VaultService {
       throw new Error(`User not found for snapshot: ${chatId}`);
     }
 
-    const { balances, valuations, totalValueUSD, allocations } = await this.syncBalances(chatId);
+    const { balances, valuations, totalValueUSD, allocations } =
+      await this.syncBalances(chatId);
 
     const targetAllocations = new Map<string, number>([
       ['USDC', user.allocationUsdc],
@@ -114,7 +125,9 @@ export class VaultService {
       targetAllocations,
     });
 
-    this.logger.log(`Saved portfolio snapshot for user ${chatId} (Total: $${totalValueUSD})`);
+    this.logger.log(
+      `Saved portfolio snapshot for user ${chatId} (Total: $${totalValueUSD})`,
+    );
     return snapshot;
   }
 
@@ -140,7 +153,10 @@ export class VaultService {
   /**
    * Fetches the recent transactions for a user.
    */
-  async getTransactions(chatId: number, limit = 10): Promise<VaultTransactionDocument[]> {
+  async getTransactions(
+    chatId: number,
+    limit = 10,
+  ): Promise<VaultTransactionDocument[]> {
     return this.transactionModel
       .find({ chatId })
       .sort({ createdAt: -1 })
@@ -150,7 +166,10 @@ export class VaultService {
   /**
    * Fetches recent snapshots.
    */
-  async getSnapshots(chatId: number, limit = 10): Promise<VaultSnapshotDocument[]> {
+  async getSnapshots(
+    chatId: number,
+    limit = 10,
+  ): Promise<VaultSnapshotDocument[]> {
     return this.snapshotModel
       .find({ chatId })
       .sort({ createdAt: -1 })

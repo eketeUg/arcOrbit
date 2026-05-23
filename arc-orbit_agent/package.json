@@ -78,6 +78,12 @@
     "collectCoverageFrom": [
       "**/*.(t|j)s"
     ],
+    "moduleNameMapper": {
+      "^src/(.*)$": "<rootDir>/$1"
+    },
+    "transformIgnorePatterns": [
+      "node_modules/(?!(\\.pnpm|@solana|uuid|rpc-websockets|@circle-fin)/)"
+    ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
   }

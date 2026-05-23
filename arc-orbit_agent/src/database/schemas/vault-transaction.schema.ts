@@ -1,14 +1,18 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
 
-export type VaultTransactionDocument = mongoose.HydratedDocument<VaultTransaction>;
+export type VaultTransactionDocument =
+  mongoose.HydratedDocument<VaultTransaction>;
 
 @Schema({ timestamps: true })
 export class VaultTransaction {
   @Prop({ type: Number, ref: 'User', required: true })
   chatId: number;
 
-  @Prop({ required: true, enum: ['DEPOSIT', 'WITHDRAWAL', 'SWAP', 'REBALANCE_SWAP'] })
+  @Prop({
+    required: true,
+    enum: ['DEPOSIT', 'WITHDRAWAL', 'SWAP', 'REBALANCE_SWAP'],
+  })
   type: string;
 
   @Prop({ required: true })
@@ -29,7 +33,11 @@ export class VaultTransaction {
   @Prop()
   explorerUrl: string;
 
-  @Prop({ required: true, enum: ['PENDING', 'COMPLETED', 'FAILED'], default: 'PENDING' })
+  @Prop({
+    required: true,
+    enum: ['PENDING', 'COMPLETED', 'FAILED'],
+    default: 'PENDING',
+  })
   status: string;
 
   @Prop()
@@ -39,4 +47,5 @@ export class VaultTransaction {
   rebalanceJobId: string;
 }
 
-export const VaultTransactionSchema = SchemaFactory.createForClass(VaultTransaction);
+export const VaultTransactionSchema =
+  SchemaFactory.createForClass(VaultTransaction);

@@ -12,10 +12,15 @@ export const crossChainMarkup = async (data: {
 }) => {
   let chainLines = '';
   for (const chain of data.chains) {
-    const diffSign = chain.drift >= 0 ? `+${chain.drift.toFixed(1)}%` : `${chain.drift.toFixed(1)}%`;
+    const diffSign =
+      chain.drift >= 0
+        ? `+${chain.drift.toFixed(1)}%`
+        : `${chain.drift.toFixed(1)}%`;
     chainLines +=
       `<b>➤ ${chain.name}</b>\n` +
-      ` • Balance: <code>${parseFloat(chain.balance).toFixed(6).replace(/\.?0+$/, '')} USDC</code>\n` +
+      ` • Balance: <code>${parseFloat(chain.balance)
+        .toFixed(6)
+        .replace(/\.?0+$/, '')} USDC</code>\n` +
       ` • Allocation: <code>${chain.actualPct.toFixed(1)}%</code> (Target: <code>${chain.targetPct}%</code>, Drift: <code>${diffSign}</code>)\n\n`;
   }
 

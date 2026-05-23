@@ -6,9 +6,15 @@ export const showBalanceMarkup = async (balances: {
   return {
     message:
       `<b>💳 ARC Treasury Wallet Balances:</b>\n\n` +
-      `➤ <b>USDC</b>: <code>${parseFloat(balances.USDC).toFixed(6).replace(/\.?0+$/, '')}</code>\n` +
-      `➤ <b>EURC</b>: <code>${parseFloat(balances.EURC).toFixed(6).replace(/\.?0+$/, '')}</code>\n` +
-      `➤ <b>cirBTC</b>: <code>${parseFloat(balances.cirBTC).toFixed(8).replace(/\.?0+$/, '')}</code>`,
+      `➤ <b>USDC</b>: <code>${parseFloat(balances.USDC)
+        .toFixed(6)
+        .replace(/\.?0+$/, '')}</code>\n` +
+      `➤ <b>EURC</b>: <code>${parseFloat(balances.EURC)
+        .toFixed(6)
+        .replace(/\.?0+$/, '')}</code>\n` +
+      `➤ <b>cirBTC</b>: <code>${parseFloat(balances.cirBTC)
+        .toFixed(8)
+        .replace(/\.?0+$/, '')}</code>`,
     keyboard: [
       [
         {

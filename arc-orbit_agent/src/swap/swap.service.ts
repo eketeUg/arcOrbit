@@ -12,9 +12,12 @@ export class SwapService {
 
   // Supported routes
   private readonly validRoutes = new Set<string>([
-    'USDC-EURC', 'EURC-USDC',
-    'USDC-cirBTC', 'cirBTC-USDC',
-    'EURC-cirBTC', 'cirBTC-EURC',
+    'USDC-EURC',
+    'EURC-USDC',
+    'USDC-cirBTC',
+    'cirBTC-USDC',
+    'EURC-cirBTC',
+    'cirBTC-EURC',
   ]);
 
   constructor(
@@ -34,7 +37,12 @@ export class SwapService {
   /**
    * Estimates the output and fees for a swap without executing it.
    */
-  async estimateSwap(chatId: number, tokenIn: string, tokenOut: string, amountIn: string) {
+  async estimateSwap(
+    chatId: number,
+    tokenIn: string,
+    tokenOut: string,
+    amountIn: string,
+  ) {
     const user = await this.userModel.findOne({ chatId });
     if (!user || !user.evmWallet?.address) {
       throw new Error(`User EVM wallet not found for chatId: ${chatId}`);
@@ -65,7 +73,9 @@ export class SwapService {
     tokenOut: string,
     amountIn: string,
     options?: { maxSlippageBps?: number; rebalanceJobId?: string },
-  ): Promise<SwapResult & { attempts: number; success: boolean; error?: string }> {
+  ): Promise<
+    SwapResult & { attempts: number; success: boolean; error?: string }
+  > {
     const user = await this.userModel.findOne({ chatId });
     if (!user || !user.evmWallet?.address) {
       throw new Error(`User EVM wallet not found for chatId: ${chatId}`);
@@ -125,7 +135,8 @@ export class SwapService {
           txLog.status = 'COMPLETED';
           txLog.txHash = swapResult.txHash;
           txLog.explorerUrl = swapResult.explorerUrl || '';
-          txLog.amountOut = swapResult.amountOut || estimate.estimatedOutput.amount;
+          txLog.amountOut =
+            swapResult.amountOut || estimate.estimatedOutput.amount;
           await txLog.save();
 
           // Sync balances

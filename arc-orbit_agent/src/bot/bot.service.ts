@@ -15,7 +15,6 @@ import {
 import { WalletService } from 'src/wallet/wallet.service';
 import { Session, SessionDocument } from 'src/database/schemas/session.schema';
 import { UserService } from 'src/user/user.service';
-import { SwapChain } from '@circle-fin/app-kit';
 import { RelayService } from 'src/relay/relay.service';
 import { VaultService } from '../vault/vault.service';
 import { SwapService } from '../swap/swap.service';
@@ -164,7 +163,7 @@ export class BotService {
       try {
         JSON.parse(str);
         return true;
-      } catch (e) {
+      } catch {
         return false;
       }
     }

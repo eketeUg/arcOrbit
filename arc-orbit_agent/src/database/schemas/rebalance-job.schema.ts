@@ -10,7 +10,14 @@ export class RebalanceJob {
 
   @Prop({
     required: true,
-    enum: ['ANALYZING', 'PLANNED', 'EXECUTING', 'SWAPPING', 'COMPLETED', 'FAILED'],
+    enum: [
+      'ANALYZING',
+      'PLANNED',
+      'EXECUTING',
+      'SWAPPING',
+      'COMPLETED',
+      'FAILED',
+    ],
     default: 'ANALYZING',
   })
   status: string;

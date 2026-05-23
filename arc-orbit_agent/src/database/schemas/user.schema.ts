@@ -56,8 +56,6 @@ export class User {
 
   @Prop({ default: false })
   crossChainRebalanceEnabled: boolean;
-
-
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

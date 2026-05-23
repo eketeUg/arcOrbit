@@ -1,8 +1,11 @@
 import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { User, UserDocument } from '../database/schemas/user.schema';
-import { RebalanceJob, RebalanceJobDocument } from '../database/schemas/rebalance-job.schema';
+import { User } from '../database/schemas/user.schema';
+import {
+  RebalanceJob,
+  RebalanceJobDocument,
+} from '../database/schemas/rebalance-job.schema';
 import { VaultService } from '../vault/vault.service';
 import { SwapService } from '../swap/swap.service';
 import { PriceService } from '../price/price.service';
@@ -17,7 +20,8 @@ export class RebalanceService implements OnModuleInit {
     private readonly swapService: SwapService,
     private readonly priceService: PriceService,
     @InjectModel(User.name) private readonly userModel: Model<User>,
-    @InjectModel(RebalanceJob.name) private readonly jobModel: Model<RebalanceJob>,
+    @InjectModel(RebalanceJob.name)
+    private readonly jobModel: Model<RebalanceJob>,
   ) {}
 
   onModuleInit() {
@@ -30,7 +34,12 @@ export class RebalanceService implements OnModuleInit {
    */
   async calculateDrift(chatId: number): Promise<{
     hasDrift: boolean;
-    driftDetails: Array<{ token: string; target: number; actual: number; drift: number }>;
+    driftDetails: Array<{
+      token: string;
+      target: number;
+      actual: number;
+      drift: number;
+    }>;
     totalValueUSD: string;
     balances: Record<string, string>;
     allocations: Record<string, number>;
@@ -96,7 +105,10 @@ export class RebalanceService implements OnModuleInit {
     const prices = {
       USDC: 1.0,
       EURC: await this.priceService.getPrice('EURC', user.evmWallet.address),
-      cirBTC: await this.priceService.getPrice('cirBTC', user.evmWallet.address),
+      cirBTC: await this.priceService.getPrice(
+        'cirBTC',
+        user.evmWallet.address,
+      ),
     };
 
     const plannedSwaps: Array<{
@@ -206,7 +218,9 @@ export class RebalanceService implements OnModuleInit {
     job.status = 'EXECUTING';
     await job.save();
 
-    this.logger.log(`Executing rebalance job ${jobId} for user ${job.chatId}...`);
+    this.logger.log(
+      `Executing rebalance job ${jobId} for user ${job.chatId}...`,
+    );
     const executedSwaps: typeof job.executedSwaps = [];
 
     try {
@@ -214,7 +228,9 @@ export class RebalanceService implements OnModuleInit {
         job.status = 'SWAPPING';
         await job.save();
 
-        this.logger.log(`Executing rebalance swap: ${swap.amount} ${swap.tokenIn} -> ${swap.tokenOut}`);
+        this.logger.log(
+          `Executing rebalance swap: ${swap.amount} ${swap.tokenIn} -> ${swap.tokenOut}`,
+        );
         const result = await this.swapService.executeSwap(
           job.chatId,
           swap.tokenIn,
@@ -271,7 +287,9 @@ export class RebalanceService implements OnModuleInit {
       for (const user of activeUsers) {
         const { hasDrift } = await this.calculateDrift(user.chatId);
         if (hasDrift) {
-          this.logger.log(`Drift detected for user ${user.chatId}. Initiating rebalance...`);
+          this.logger.log(
+            `Drift detected for user ${user.chatId}. Initiating rebalance...`,
+          );
           const job = await this.generateRebalancePlan(user.chatId, false);
           if (job.plannedSwaps.length > 0) {
             await this.executeRebalance(job._id.toString());
@@ -291,7 +309,10 @@ export class RebalanceService implements OnModuleInit {
   /**
    * Fetches rebalance history.
    */
-  async getHistory(chatId: number, limit = 10): Promise<RebalanceJobDocument[]> {
+  async getHistory(
+    chatId: number,
+    limit = 10,
+  ): Promise<RebalanceJobDocument[]> {
     return this.jobModel.find({ chatId }).sort({ createdAt: -1 }).limit(limit);
   }
 }
