@@ -82,7 +82,7 @@
       "^src/(.*)$": "<rootDir>/$1"
     },
     "transformIgnorePatterns": [
-      "node_modules/(?!(\\.pnpm|@solana|uuid|rpc-websockets|@circle-fin)/)"
+      "node_modules/(?!(.*(@solana|uuid|rpc-websockets|@circle-fin|@wagmi|viem|@scure|@noble|@adraffy|@ethereumjs|pify|is-plain-obj|eip1193-provider)))"
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
